@@ -26,6 +26,9 @@ def setUp():
         print(f'Current URL: {driver.current_url}, Page title: {driver.title}')
 
 
+
+
+
 def tearDown():
     if driver is not None:
         print(f'-------------------------***--------------------------')
