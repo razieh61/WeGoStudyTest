@@ -28,3 +28,7 @@ postal_code = fake.postalcode()
 email_address = fake.email()
 
 job_description = fake.sentence(nb_words=50)
+
+image_1 = './upload/StudentImage.png'
+document_1 = './upload/TestDocument_1.pdf'
+document_2 = './upload/TestDocument_2.pdf'
