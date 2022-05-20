@@ -86,7 +86,7 @@ def create_new_student():
 
     # _______________________________User Picture________________________________
 
-    driver.find_element(By.ID, 'imageUpload').send_keys('C:/Users/Sveta/Desktop/WeGoStudyTest/StudentImage.png')
+    driver.find_element(By.ID, 'imageUpload').send_keys(locators.image_1)
     sleep(0.5)
 
     # ____________________________Personal Information___________________________
@@ -183,12 +183,12 @@ def create_new_student():
         sleep(0.5)
         assert driver.find_element(By.XPATH, '//a[@data-toggle="tooltip"]').is_displayed()
         sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_documents_attributes_0_file').send_keys('C:/Users/Sveta/Desktop/WeGoStudyTest/TestDocument_1.pdf')
+        driver.find_element(By.ID, 'user_student_detail_attributes_documents_attributes_0_file').send_keys(locators.document_1)
         sleep(0.5)
         driver.find_element(By.XPATH,
                             '//a[contains(@class,"btn btn-green-br ml-auto btn-xs mb-3 add_fields")]').click()
         sleep(0.5)
-        driver.find_element(By.XPATH, '(//input[contains(@class, "form-control-file")])[2]').send_keys('C:/Users/Sveta/Desktop/WeGoStudyTest/TestDocument_2.pdf')
+        driver.find_element(By.XPATH, '(//input[contains(@class, "form-control-file")])[2]').send_keys(locators.document_2)
         sleep(2)
         driver.find_element(By.XPATH, '(//i[@class="fa fa-times"])[2]').click()
         sleep(0.5)
