@@ -12,6 +12,50 @@ partner_home_page = 'https://www.wegostudy.ca/partner/home'
 partner_student_details_page = 'https://www.wegostudy.ca/partners/student_details'
 partner_new_student_page = 'https://www.wegostudy.ca/partners/student_details/new'
 
+
+invalid_logins = [
+    {
+        'email': 'chris.velasco78gmail.com',
+        'password': 'P@r0la000'
+    },
+    {
+        'email': 'chris.velasco78@gmail.com',
+        'password': 'P@r0la000'
+    },
+    {
+        'email': ' ',
+        'password': 'P@r0la000'
+    },
+    {
+        'email': 'constantinrox.iasi@gmail.com',
+        'password': '123password'
+    },
+    {
+        'email': 'constantinrox.iasi@gmail.com',
+        'password': ' '
+    },
+    {
+        'email': ' ',
+        'password': ' '
+    },
+    {
+        'email': 'chris.velasco78gmail.com',
+        'password': '123password'
+    },
+    {
+        'email': ' ',
+        'password': '123password'
+    },
+    {
+        'email': 'chris.velasco78@gmail.com',
+        'password': ' '
+    },
+    {
+        'email': 'chris.velascigmail.com',
+        'password': ' '
+    }
+]
+
 first_name = fake.first_name()
 middle_name = fake.first_name()
 last_name = fake.last_name()
