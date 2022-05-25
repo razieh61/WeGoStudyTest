@@ -91,6 +91,7 @@ def negative_login_test():
         driver.find_element(By.XPATH, '//button[@class = "close-btn"]').click()
         sleep(1)
 
+
 def create_new_student():
     assert driver.current_url == locators.partner_home_page
     driver.find_element(By.LINK_TEXT, 'My WeGoStudy').click()
