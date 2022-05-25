@@ -13,7 +13,55 @@ user_password = 'testpassword2'
 partner_home_page = 'https://www.wegostudy.ca/partner/home'
 partner_student_details_page = 'https://www.wegostudy.ca/partners/student_details'
 partner_new_student_page = 'https://www.wegostudy.ca/partners/student_details/new'
+<<<<<<< HEAD
 partner_details_page = 'https://www.wegostudy.ca/partners/partner_details/testpartner-a6d899cd-c8aa-4ed0-87c7-bafea8aca8ae'
+=======
+
+
+invalid_logins = [
+    {
+        'email': 'chris.velasco78gmail.com',
+        'password': 'P@r0la000'
+    },
+    {
+        'email': 'chris.velasco78@gmail.com',
+        'password': 'P@r0la000'
+    },
+    {
+        'email': ' ',
+        'password': 'P@r0la000'
+    },
+    {
+        'email': 'constantinrox.iasi@gmail.com',
+        'password': '123password'
+    },
+    {
+        'email': 'constantinrox.iasi@gmail.com',
+        'password': ' '
+    },
+    {
+        'email': ' ',
+        'password': ' '
+    },
+    {
+        'email': 'chris.velasco78gmail.com',
+        'password': '123password'
+    },
+    {
+        'email': ' ',
+        'password': '123password'
+    },
+    {
+        'email': 'chris.velasco78@gmail.com',
+        'password': ' '
+    },
+    {
+        'email': 'chris.velascigmail.com',
+        'password': ' '
+    }
+]
+
+>>>>>>> 1e6852a44b52e48d10f90c936d129dc660d5397f
 first_name = fake.first_name()
 middle_name = fake.first_name()
 last_name = fake.last_name()
