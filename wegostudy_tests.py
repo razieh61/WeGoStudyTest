@@ -9,6 +9,7 @@ class WeGoStudyPositiveTestCases(unittest.TestCase):
     def test_WeGoStudy():  # test_ in the name is mandatory
         methods.setUp()
         methods.log_in()
+        #methods.update_profile()
         methods.create_new_student()
         methods.log_out()
         methods.tearDown()

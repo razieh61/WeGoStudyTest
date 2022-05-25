@@ -73,6 +73,65 @@ def log_out():
     print(f'Signed out successfully at {datetime.datetime.now()}')
 
 
+def update_profile():
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//*[@id="navbar-nav"]/ul[2]/li[2]/a').click()
+    sleep(0.5)
+    driver.find_element(By.LINK_TEXT, 'My Profile').click()
+    sleep(0.5)
+    assert driver.current_url == locators.partner_details_page
+    sleep(0.5)
+    # _______________________________User Picture________________________________
+
+    driver.find_element(By.ID, 'imageUpload').send_keys(locators.image_2)
+    sleep(0.5)
+    # --------------- Personal Information ----------------
+    driver.find_element(By.ID, 'partner_detail_first_name').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_first_name').send_keys(locators.first_name)
+    sleep(0.25)
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_middle_name"]').clear()
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_middle_name"]').send_keys(
+        locators.middle_name)
+    sleep(0.25)
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_last_name"]').clear()
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_last_name"]').send_keys(
+        locators.last_name)
+    sleep(0.25)
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_organization_name"]').clear()
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_organization_name"]').send_keys(
+        locators.organization)
+    sleep(0.25)
+    d = driver.find_element(By.XPATH, '//input[@id="partner_detail_date_of_birth"]')
+    d.click()
+    d.send_keys(locators.birth_date)
+    d.clear()
+    d.send_keys(locators.birth_date)
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_passport_number').send_keys(locators.passport_number)
+    driver.find_element(By.XPATH, '//*[@id="select2-partner_detail_country_of_citizenship-container"]').click()
+    sleep(0.25)
+    r = random.randint(7, 251)
+    driver.find_element(By.XPATH, f'//ul[@id="select2-partner_detail_country_of_citizenship-results"]/li["{r}"]').click()
+    sleep(0.5)
+
+    driver.find_element(By.CLASS_NAME, 'selected-flag').click()
+    sleep(0.25)
+    c = random.randint(254, 500)
+    driver.find_element(By.XPATH, f"//ul[@id='country-listbox']/li['{c}']").click()
+    sleep(0.25)
+    driver.find_element(By.ID, 'phone_number').clear()
+    driver.find_element(By.ID, 'phone_number').send_keys(locators.phone_number)
+    sleep(0.25)
+#    driver.find_element(By.XPATH, '//div[@class="actions"]/input[@value="save"]').click()
+
+    # driver.find_element(By.XPATH, '//h5[contains(text(),"Personal Information")]/../input[@value="save"]').click()
+   # sleep(2)
+
+
+
+
 def create_new_student():
     assert driver.current_url == locators.partner_home_page
     driver.find_element(By.LINK_TEXT, 'My WeGoStudy').click()
