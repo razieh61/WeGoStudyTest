@@ -7,7 +7,7 @@ fake = Faker(locale=['en_CA','en_US'])
 app = 'WeGoStudy'
 wegostudy_url = 'https://www.wegostudy.ca/'
 wegostudy_home_page_title = 'WeGoStudy'
-user_name = 'TestPartner'
+user_name = 'Joshua Thomas Bailey'
 user_email = 'svglaz@yahoo.ca'
 user_password = 'testpassword2'
 partner_home_page = 'https://www.wegostudy.ca/partner/home'
@@ -22,7 +22,7 @@ preferred_name = f'{first_name} {last_name}'
 full_name = f'{first_name} {middle_name} {last_name}'
 date_of_birth = '20001112'
 passport_number = fake.pyint(111111,999999)
-phone_number = fake.phone_number()
+phone_number = fake.phone_number()[:20]
 aprt_number = fake.pyint(1,300)
 building_number = fake.building_number()
 street = fake.street_name()
@@ -41,6 +41,10 @@ document_2 = path.strip()+'/upload/TestDocument_2.pdf'
 
 organization = fake.company()
 birth_date = fake.day_of_month()+ '-' + fake.month() + '-' + fake.year()
+
+
+def get_random_passport_number():
+    return fake.pyint(111111, 999999)
 
 
 invalid_logins = [
@@ -85,5 +89,3 @@ invalid_logins = [
         'password': ' '
     }
 ]
-
-
