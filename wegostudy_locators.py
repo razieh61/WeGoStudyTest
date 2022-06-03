@@ -13,63 +13,15 @@ user_password = 'testpassword2'
 partner_home_page = 'https://www.wegostudy.ca/partner/home'
 partner_student_details_page = 'https://www.wegostudy.ca/partners/student_details'
 partner_new_student_page = 'https://www.wegostudy.ca/partners/student_details/new'
-<<<<<<< HEAD
 partner_details_page = 'https://www.wegostudy.ca/partners/partner_details/testpartner-a6d899cd-c8aa-4ed0-87c7-bafea8aca8ae'
-=======
-
-
-invalid_logins = [
-    {
-        'email': 'chris.velasco78gmail.com',
-        'password': 'P@r0la000'
-    },
-    {
-        'email': 'chris.velasco78@gmail.com',
-        'password': 'P@r0la000'
-    },
-    {
-        'email': ' ',
-        'password': 'P@r0la000'
-    },
-    {
-        'email': 'constantinrox.iasi@gmail.com',
-        'password': '123password'
-    },
-    {
-        'email': 'constantinrox.iasi@gmail.com',
-        'password': ' '
-    },
-    {
-        'email': ' ',
-        'password': ' '
-    },
-    {
-        'email': 'chris.velasco78gmail.com',
-        'password': '123password'
-    },
-    {
-        'email': ' ',
-        'password': '123password'
-    },
-    {
-        'email': 'chris.velasco78@gmail.com',
-        'password': ' '
-    },
-    {
-        'email': 'chris.velascigmail.com',
-        'password': ' '
-    }
-]
-
->>>>>>> 1e6852a44b52e48d10f90c936d129dc660d5397f
 first_name = fake.first_name()
 middle_name = fake.first_name()
 last_name = fake.last_name()
 preferred_name = f'{first_name} {last_name}'
 full_name = f'{first_name} {middle_name} {last_name}'
-date_of_birth = '20001112'
+date_of_birth = "2022104"
 passport_number = fake.pyint(111111,999999)
-phone_number = fake.phone_number()
+phone_number = fake.pyint(1111111111,9999999999)
 aprt_number = fake.pyint(1,300)
 building_number = fake.building_number()
 street = fake.street_name()
@@ -87,5 +39,13 @@ document_1 = path.strip()+'/upload/TestDocument_1.pdf'
 document_2 = path.strip()+'/upload/TestDocument_2.pdf'
 
 organization = fake.company()
-birth_date = fake.day_of_month()+ '-' + fake.month() + '-' + fake.year()
+birth_date = fake.day_of_month() + '-' + fake.month() + '-' + fake.year()
+apartment_num = fake.building_number()
 
+schoollist = ["CCTB", "UBC", "SFU", "VCC", "MMU"]
+programlist = ["MBA", "SQA","web design", "UI/UX"]
+credentiallist = ["Certificate", "Diploma", "Degree", "Master", "Doctoral"]
+GPAscales = [4, 5, 10, 100]
+languages = ["English", "French", "spanish"]
+service = fake.catch_phrase()
+iccrc = fake.ean(length=8)
