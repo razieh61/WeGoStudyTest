@@ -6,7 +6,10 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 import wegostudy_locators as locators
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+
 
 driver = webdriver.Chrome(executable_path=ChromeDriverManager().install())
 
@@ -55,7 +58,11 @@ def log_in():
 
             if driver.current_url == locators.partner_home_page:
                 assert driver.find_element(By.XPATH, '//div[contains(text(), "Signed in successfully.")]').is_displayed()
+                sleep(0.5)
                 assert driver.find_element(By.LINK_TEXT, locators.user_name).is_displayed()
+
+                sleep(0.5)
+
                 driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
                 print(f'Signed in successfully at {datetime.datetime.now()}. Username: {locators.user_name}')
             else:
@@ -68,8 +75,14 @@ def log_out():
     driver.find_element(By.LINK_TEXT, 'Log out').click()
     sleep(0.5)
     assert driver.current_url == locators.wegostudy_url
+    sleep(0.5)
     assert driver.find_element(By.XPATH, '//div[contains(text(), "Signed out successfully.")]').is_displayed()
+    sleep(0.5)
     print(f'Signed out successfully at {datetime.datetime.now()}')
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(1)
+
 
 
 def negative_login_test():
@@ -90,6 +103,291 @@ def negative_login_test():
             print('Something is wrong, check the code.')
         driver.find_element(By.XPATH, '//button[@class = "close-btn"]').click()
         sleep(1)
+
+
+
+def update_profile():
+
+    driver.find_element(By.XPATH, '//*[@id="navbar-nav"]/ul[2]/li[2]/a').click()
+    sleep(0.5)
+    driver.find_element(By.LINK_TEXT, 'My Profile').click()
+    sleep(0.5)
+    assert driver.current_url == locators.partner_details_page
+    print('My Profile page was successfully launched')
+    sleep(0.5)
+    # _______________________________User Picture________________________________
+
+    driver.find_element(By.ID, 'imageUpload').send_keys(locators.image_2)
+    #
+    driver.find_element(By.ID, 'imageUpload').send_keys(locators.image_1)
+    sleep(0.5)
+    # --------------- Personal Information ----------------
+    driver.find_element(By.ID, 'partner_detail_first_name').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_first_name').send_keys(locators.first_name)
+    sleep(0.25)
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_middle_name"]').clear()
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_middle_name"]').send_keys(
+        locators.middle_name)
+    sleep(0.25)
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_last_name"]').clear()
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_last_name"]').send_keys(
+        locators.last_name)
+    sleep(0.25)
+    assert driver.find_element(By.XPATH,
+                               '//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
+    print('--- User Picture was successfully updated ---')
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(0.5)
+    # # --------------- Personal Information ----------------
+    # # driver.find_element(By.ID, 'partner_detail_first_name').clear()
+    # # sleep(0.25)
+    # # driver.find_element(By.ID, 'partner_detail_first_name').send_keys(locators.first_name)
+    # # sleep(0.25)
+    # # driver.find_element(By.XPATH, '//input[@id="partner_detail_middle_name"]').clear()
+    # # driver.find_element(By.XPATH, '//input[@id="partner_detail_middle_name"]').send_keys(
+    # #     locators.middle_name)
+    # # sleep(0.25)
+    # # driver.find_element(By.XPATH, '//input[@id="partner_detail_last_name"]').clear()
+    # # driver.find_element(By.XPATH, '//input[@id="partner_detail_last_name"]').send_keys(
+    # #     locators.last_name)
+    # sleep(0.25)
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_organization_name"]').clear()
+    driver.find_element(By.XPATH, '//input[@id="partner_detail_organization_name"]').send_keys(
+        locators.organization)
+    sleep(0.25)
+    d = driver.find_element(By.XPATH, '//input[@id="partner_detail_date_of_birth"]')
+    d.click()
+    d.send_keys(locators.birth_date)
+    d.clear()
+    d.send_keys(locators.birth_date)
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_passport_number').send_keys(locators.passport_number)
+    driver.find_element(By.XPATH, '//*[@id="select2-partner_detail_country_of_citizenship-container"]').click()
+    driver.find_element(By.ID, 'partner_detail_passport_number').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_passport_number').send_keys(locators.passport_number)
+    sleep(0.5)
+    # driver.find_element(By.XPATH, '//*[@id="select2-partner_detail_country_of_citizenship-container"]').click()
+    driver.find_element(By.ID, "select2-partner_detail_country_of_citizenship-container").click()
+    r = random.randint(7, 251)
+    driver.find_element(By.XPATH,
+                        f'//ul[@id="select2-partner_detail_country_of_citizenship-results"]/li["{r}"]').click()
+    sleep(0.5)
+
+    Select(driver.find_element(By.ID, "partner_detail_country_of_citizenship")).select_by_index(r)
+    sleep(0.5)
+    driver.find_element(By.CLASS_NAME, 'selected-flag').click()
+    sleep(0.25)
+    c = random.randint(254, 500)
+    driver.find_element(By.XPATH, f"//ul[@id='country-listbox']/li['{c}']").click()
+    c = random.randint(1, 20)
+    driver.find_element(By.XPATH, f"//ul[@id='country-listbox']/li[{c}]").click()
+    sleep(0.25)
+    driver.find_element(By.ID, 'phone_number').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'phone_number').send_keys(locators.phone_number)
+    sleep(0.25)
+    #    driver.find_element(By.XPATH, '//div[@class="actions"]/input[@value="save"]').click()
+    driver.find_element(By.XPATH, "(//input[@type = 'submit'])[1]").click()
+    sleep(2)
+    assert driver.find_element(By.XPATH,
+                               '//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
+    print('--- Personal Information was successfully updated ---')
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(0.5)
+
+    # driver.find_element(By.XPATH, '//h5[contains(text(),"Personal Information")]/../input[@value="save"]').click()
+    # sleep(2)
+    # --------------- Contact Information ----------------
+    driver.find_element(By.ID, 'partner_detail_address_attributes_apartment_number').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_address_attributes_apartment_number').send_keys(locators.aprt_number)
+    sleep(0.3)
+    driver.find_element(By.ID, 'partner_detail_address_attributes_mailing_address').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_address_attributes_mailing_address').send_keys(locators.mailing_address)
+    sleep(1)
+    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_country_chosen']/a[1]/span[1]").click()
+    sleep(1)
+    r = random.randint(3, 246)
+    sleep(1)
+    driver.find_element(By.XPATH,
+                        f'//div[@id="partner_detail_address_attributes_country_chosen"]//ul[1]/li[@data-option-array-index={r}]').click()
+    sleep(2)
+    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_state_chosen']/a/span").click()
+    sleep(1)
+    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_state_chosen']//ul/li[2]").click()
+    sleep(1.5)
+    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_city_chosen']/a/span").click()
+    sleep(1.5)
+    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_city_chosen']//ul/li[2]").click()
+    sleep(0.5)
+    driver.find_element(By.ID, 'partner_detail_address_attributes_zip_code').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_address_attributes_zip_code').send_keys(locators.postal_code)
+    sleep(0.3)
+    driver.find_element(By.XPATH, "(//input[@type = 'submit'])[2]").click()
+    sleep(3)
+    assert driver.find_element(By.XPATH,
+                               '//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
+    print('--- Contact Information was successfully updated ---')
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(1)
+    # ____________________________Education Information_______________________
+    # driver.find_element(By.XPATH, "//div[@id='partner_detail_user_educations_attributes_0_credentials_chosen']/a[1]/span[1]").click()
+    # sleep(1)
+    # x = random.randint(1,4)
+    # sleep(1)
+    # driver.find_element(By.XPATH, f'//*[@id="partner_detail_user_educations_attributes_0_credentials_chosen"]//ul[@class="chosen-results"]/li[{x}]').click()
+    # sleep(1)
+    r = random.randint(0, 4)
+    sleep(0.5)
+    driver.find_element(By.ID, 'partner_detail_user_educations_attributes_0_school_name').clear()
+    sleep(0.5)
+    driver.find_element(By.ID, 'partner_detail_user_educations_attributes_0_school_name').send_keys(
+        locators.schoollist[r])
+    sleep(0.5)
+    driver.find_element(By.ID, 'partner_detail_user_educations_attributes_0_program').clear()
+    sleep(0.25)
+    r = random.randint(0, 3)
+    sleep(0.5)
+    driver.find_element(By.ID, 'partner_detail_user_educations_attributes_0_program').send_keys(locators.programlist[r])
+    sleep(1)
+    driver.find_element(By.XPATH,
+                        '//div[@id="partner_detail_user_educations_attributes_0_gpa_scale_chosen"]/a[@class="chosen-single"]/span[1]').click()
+    sleep(1)
+    a = random.randint(1, 4)
+    sleep(0.5)
+    driver.find_element(By.XPATH,
+                        f'//div[@id="partner_detail_user_educations_attributes_0_gpa_scale_chosen"]//ul[@class="chosen-results"]/li[{a}]').click()
+    sleep(1)
+    g = locators.GPAscales[a - 1]
+    sleep(0.5)
+    i = random.randint(1, g)
+    sleep(1)
+    driver.find_element(By.ID, 'partner_detail_user_educations_attributes_0_gpa').clear()
+    sleep(0.5)
+    driver.find_element(By.ID, 'partner_detail_user_educations_attributes_0_gpa').send_keys(str(i))
+    sleep(1.5)
+
+    # ---- add another cert----
+    driver.find_element(By.XPATH, '//a[contains(.,"+ Add Education")]').click()
+    sleep(1)
+    r = random.randint(0, 4)
+    sleep(0.5)
+    Select(driver.find_element(By.XPATH, "//select[@class='custom-select chosen-select']")).select_by_value(
+        locators.credentiallist[r])
+    sleep(0.5)
+    r = random.randint(0, 4)
+    driver.find_element(By.XPATH, "(//input[@placeholder='School Name'])[1]").send_keys(locators.schoollist[r])
+    sleep(0.5)
+    r = random.randint(0, 3)
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@placeholder='Program'])[1]").send_keys(locators.programlist[r])
+    sleep(0.5)
+    a = random.choice(locators.GPAscales)
+    Select(driver.find_element(By.XPATH, "//select[@class='form-control chosen-select']")).select_by_value(str(a))
+    sleep(0.5)
+    b = random.randint(1, a)
+    driver.find_element(By.XPATH, "(//input[@placeholder='GPA'])[1]").send_keys(b)
+    sleep(0.75)
+    driver.find_element(By.XPATH, "//div[contains(@class,'col-12 col-12-extended')]//a").click()
+    sleep(1)
+    driver.find_element(By.XPATH, "(//input[@type = 'submit'])[3]").click()
+    sleep(3)
+    assert driver.find_element(By.XPATH,
+                               '//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
+    print('--- Education Information was successfully updated ---')
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(0.5)
+    # _______________________________language________________________________
+    driver.find_element(By.ID, 'partner_detail_language_spokens_attributes_0_language_name').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_language_spokens_attributes_0_language_name').send_keys(
+        random.choice(locators.languages))
+    sleep(0.5)
+    r = random.randint(0, 2)
+    sleep(0.5)
+    Select(driver.find_element(By.ID, "partner_detail_language_spokens_attributes_0_proficiency")).select_by_index(r)
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//a[contains(.,"+ Add Languages")]').click()
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@placeholder='Language name'])[1]").send_keys(
+        random.choice(locators.languages))
+    sleep(0.5)
+    p = random.randint(0, 2)
+    sleep(0.5)
+    Select(
+        driver.find_element(By.XPATH, '(//select[@class="custom-select form-control form-group"])[1]')).select_by_index(
+        p)
+    sleep(1)
+    driver.find_element(By.XPATH, '(//a[contains(.,"Remove language")])[1]').click()
+    sleep(1)
+    driver.find_element(By.XPATH, "(//input[@type = 'submit'])[4]").click()
+    sleep(1.5)
+    assert driver.find_element(By.XPATH,
+                               '//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
+    print('--- Language Info was successfully updated ---')
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(0.5)
+    # _______________________________services________________________________
+    driver.find_element(By.ID, 'partner_detail_service_provided').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_service_provided').send_keys(locators.service)
+    sleep(0.25)
+    driver.find_element(By.XPATH, "(//input[@type = 'submit'])[5]").click()
+    sleep(1.5)
+    assert driver.find_element(By.XPATH,
+                               '//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
+    print('--- Services Info was successfully updated ---')
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(0.5)
+    # _______________________________ICCRC________________________________
+
+    driver.find_element(By.ID, 'partner_detail_is_immigration_consultant').click()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_iccrc_number').clear()
+    sleep(0.25)
+    driver.find_element(By.ID, 'partner_detail_iccrc_number').send_keys(locators.iccrc)
+    sleep(0.25)
+    driver.find_element(By.XPATH, "(//input[@type = 'submit'])[6]").click()
+    sleep(1.5)
+    assert driver.find_element(By.XPATH,
+                               '//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
+    print('--- ICCRC was successfully updated ---')
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(0.5)
+    # _______________________________Document________________________________
+    driver.find_element(By.XPATH, "(//a[@class='remove_fields existing'])[1]/i[1]").click()
+    sleep(1)
+    driver.find_element(By.XPATH, '//a[contains(.,"+ Add Document")]').click()
+    sleep(1)
+    driver.find_element(By.XPATH, "//div[@class='file-upload']//input[1]").send_keys(locators.document_2)
+    sleep(1)
+    driver.find_element(By.XPATH,
+                        "/html/body/section/div/div/div[2]/form/div[7]/div/div[1]/div/div[3]/div/div/div[2]/div/select[1]").click()
+    r = random.randint(1, 4)
+    sleep(1)
+    element = driver.find_element(By.XPATH,
+                                  "/html/body/section/div/div/div[2]/form/div[7]/div/div[1]/div/div[3]/div/div/div[2]/div/select[1]")
+    sleep(0.5)
+    Select(element).select_by_index(r)
+    sleep(1)
+    driver.find_element(By.XPATH, "(//input[@type = 'submit'])[7]").click()
+    sleep(1.5)
+    assert driver.find_element(By.XPATH,
+                               '//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
+    print('--- Documents was successfully updated ---')
+    driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
+    sleep(2)
 
 
 def create_new_student():

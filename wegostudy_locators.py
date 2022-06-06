@@ -22,7 +22,9 @@ preferred_name = f'{first_name} {last_name}'
 full_name = f'{first_name} {middle_name} {last_name}'
 date_of_birth = '20001112'
 passport_number = fake.pyint(111111,999999)
-phone_number = fake.phone_number()[:20]
+
+phone_number = fake.phone_number()[:10]
+
 aprt_number = fake.pyint(1,300)
 building_number = fake.building_number()
 street = fake.street_name()
@@ -89,3 +91,14 @@ invalid_logins = [
         'password': ' '
     }
 ]
+
+apartment_num = fake.building_number()
+
+schoollist = ["CCTB", "UBC", "SFU", "VCC", "MMU"]
+programlist = ["MBA", "SQA","web design", "UI/UX"]
+credentiallist = ["Certificate", "Diploma", "Degree", "Master", "Doctoral"]
+GPAscales = [4, 5, 10, 100]
+languages = ["English", "French", "spanish"]
+service = fake.catch_phrase()
+iccrc = fake.ean(length=8)
+
