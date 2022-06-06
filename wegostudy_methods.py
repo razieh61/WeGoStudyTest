@@ -60,7 +60,9 @@ def log_in():
                 assert driver.find_element(By.XPATH, '//div[contains(text(), "Signed in successfully.")]').is_displayed()
                 sleep(0.5)
                 assert driver.find_element(By.LINK_TEXT, locators.user_name).is_displayed()
+
                 sleep(0.5)
+
                 driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
                 print(f'Signed in successfully at {datetime.datetime.now()}. Username: {locators.user_name}')
             else:
@@ -82,6 +84,7 @@ def log_out():
     sleep(1)
 
 
+
 def negative_login_test():
     for i in range(10):
         driver.find_element(By.XPATH, '//b[normalize-space()="LOGIN"]').click()
@@ -100,6 +103,7 @@ def negative_login_test():
             print('Something is wrong, check the code.')
         driver.find_element(By.XPATH, '//button[@class = "close-btn"]').click()
         sleep(1)
+
 
 
 def update_profile():
