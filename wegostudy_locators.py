@@ -21,9 +21,12 @@ middle_name = fake.first_name()
 last_name = fake.last_name()
 preferred_name = f'{first_name} {last_name}'
 full_name = f'{first_name} {middle_name} {last_name}'
-date_of_birth = '1980-06-08'
+
+date_of_birth = '2000-11-12'
 passport_number = fake.pyint(111111,999999)
+
 phone_number = fake.phone_number()[:10]
+
 aprt_number = fake.pyint(1,300)
 building_number = fake.building_number()
 street = fake.street_name()
@@ -90,17 +93,19 @@ invalid_logins = [
         'password': ' '
     }
 ]
+
 apartment_num = fake.building_number()
 
 schoollist = ["CCTB", "UBC", "SFU", "VCC", "MMU"]
 programlist = ["MBA", "SQA","web design", "UI/UX"]
 credentiallist = ["Certificate", "Diploma", "Degree", "Master", "Doctoral"]
 GPAscales = [4, 5, 10, 100]
-languages = ["English", "French", "spanish"]
+languages = ["English", "French", "Spanish"]
 service = fake.catch_phrase()
 iccrc = fake.ean(length=8)
 
-student_name = 'Michael Nicole Castro'
+
+student_name = 'Kenneth Andrew Kim'
 college_ID = fake.pyint(1, 200)
 study_permit = fake.pyint(1, 500)
 admitted_date = '06-20-2022'
@@ -116,3 +121,4 @@ a = datetime.datetime(2022, 6, 5)
 start_date = a.strftime("%Y/%m/%d")
 b = datetime.datetime(2022, 6, 30)
 end_date = b.strftime("%Y/%m/%d")
+

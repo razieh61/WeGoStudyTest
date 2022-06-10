@@ -41,16 +41,17 @@ class WeGoStudyTestCases(unittest.TestCase):
 
     @staticmethod  # signal to unittest that this is a function inside class (vs @classmethod)
     def test_2all_applications():
-        # """test all applications"""
+        """test all applications"""
         methods.log_in()
         methods.all_applications()
         methods.log_out()
 
     @staticmethod  # signal to unittest that this is a function inside class (vs @classmethod)
     def test_1update_profile():  # test_ in the name is mandatory
-        # """test edit profile"""
+        """test edit profile"""
         methods.log_in()
         methods.update_profile()
         methods.log_out()
+
 
 

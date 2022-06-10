@@ -83,6 +83,7 @@ def log_out():
     sleep(1)
 
 
+
 def negative_login_test():
     for i in range(10):
         driver.find_element(By.XPATH, '//b[normalize-space()="LOGIN"]').click()
@@ -202,6 +203,7 @@ def all_applications():
     # sleep(0.25)
     # driver.find_element(By.ID, 'delete_applications').click()
     # sleep(0.5)
+
 
 
 def update_profile():
@@ -623,6 +625,7 @@ def view_details_of_student():
     #
     # if current_url == view_details_link:
     #     print('We are on View details of student page.')
+
 
     driver.find_element(By.LINK_TEXT, 'View Details').click()
     sleep(0.5)
@@ -1051,6 +1054,17 @@ def create_application():
         driver.find_element(By.XPATH, '(//a[contains(@class,"btn btn-red-br")])[2]').click()
         sleep(0.3)
         print(f'Work Experience was updated.')
+        sleep(0.5)
+
+        driver.find_element(By.ID, 'admission_electronic_communication_false').click()
+        sleep(0.5)
+        driver.find_element(By.XPATH, "//input[@value='Save']").click()
+        sleep(2)
+        assert driver.find_element(By.XPATH, f'//div[contains(text(), "Admission application created successfully for the {locators.student_name}.")]').is_displayed()
+        sleep(1)
+        assert driver.current_url == locators.partner_student_details_page
+        sleep(0.5)
+        print(f'Application was successfully created.')
         sleep(0.5)
 
         driver.find_element(By.ID, 'admission_electronic_communication_false').click()
