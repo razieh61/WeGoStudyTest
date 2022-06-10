@@ -35,6 +35,13 @@ class WeGoStudyPositiveTestCases(unittest.TestCase):
         methods.log_out()
 
     @staticmethod
+    def test4_WeGoStudy():
+        """test application"""
+        methods.log_in()
+        methods.create_application()
+        methods.log_out()
+
+    @staticmethod
     def test3_WeGoStudy():
         """negative login test """
         methods.negative_login_test()

@@ -4,6 +4,7 @@ from selenium import webdriver
 from time import sleep
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver import Keys
 import wegostudy_locators as locators
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
@@ -60,9 +61,7 @@ def log_in():
                 assert driver.find_element(By.XPATH, '//div[contains(text(), "Signed in successfully.")]').is_displayed()
                 sleep(0.5)
                 assert driver.find_element(By.LINK_TEXT, locators.user_name).is_displayed()
-
                 sleep(0.5)
-
                 driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
                 print(f'Signed in successfully at {datetime.datetime.now()}. Username: {locators.user_name}')
             else:
@@ -344,6 +343,7 @@ def update_profile():
 
 
 def create_new_student():
+    sleep(1)
     assert driver.current_url == locators.partner_home_page
     driver.find_element(By.LINK_TEXT, 'My WeGoStudy').click()
     sleep(0.25)
@@ -356,15 +356,13 @@ def create_new_student():
 
     if driver.current_url == locators.partner_new_student_page:
         assert driver.current_url == locators.partner_new_student_page
-        print(f'We are on new student page.')
+        print(f'------------We are on new student page-----------------')
 
         # _______________________________User Picture________________________________
-
         driver.find_element(By.ID, 'imageUpload').send_keys(locators.image_1)
         sleep(0.5)
 
         # ____________________________Personal Information___________________________
-
         driver.find_element(By.ID, 'user_student_detail_attributes_first_name').send_keys(locators.first_name)
         sleep(0.3)
         driver.find_element(By.ID, 'user_student_detail_attributes_middle_name').send_keys(locators.middle_name)
@@ -373,12 +371,10 @@ def create_new_student():
         sleep(0.3)
         driver.find_element(By.ID, 'user_student_detail_attributes_preferred_name').send_keys(locators.preferred_name)
         sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').click()
-        sleep(0.5)
         driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').send_keys(locators.date_of_birth)
-        sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').clear()
-        sleep(0.5)
+        sleep(1)
+        driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').send_keys(20 * Keys.BACKSPACE)
+        sleep(2)
         driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').send_keys(locators.date_of_birth)
         sleep(0.5)
         driver.find_element(By.ID, 'user_student_detail_attributes_passport_number').send_keys(locators.get_random_passport_number())
@@ -394,7 +390,6 @@ def create_new_student():
         sleep(0.3)
 
         # __________________________Contact Information_________________________________
-
         driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_apartment_number').send_keys(locators.aprt_number)
         sleep(0.3)
         driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_mailing_address').send_keys(locators.mailing_address)
@@ -417,7 +412,6 @@ def create_new_student():
         sleep(0.3)
 
         # ____________________________Education Information_______________________
-
         driver.find_element(By.LINK_TEXT, 'Credentials').click()
         sleep(0.5)
         driver.find_element(By.XPATH,
@@ -449,7 +443,6 @@ def create_new_student():
         sleep(0.5)
 
         # ________________________________Documents____________________________________
-
         driver.find_element(By.XPATH, '//i[@class="fa fa-question-circle"]').click()
         sleep(0.5)
         assert driver.find_element(By.XPATH, '//a[@data-toggle="tooltip"]').is_displayed()
@@ -465,7 +458,6 @@ def create_new_student():
         sleep(0.5)
 
         # ___________________________Work Experience____________________________________
-
         driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_type_of_industry').send_keys('Business')
         sleep(0.3)
         driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_position_rank').send_keys('2')
@@ -517,214 +509,432 @@ def view_details_of_student():
     assert driver.current_url == locators.partner_student_details_page
     assert driver.find_element(By.XPATH, '//h4[contains(text(), "My Students")]').is_displayed()
 
-    elements = driver.find_elements(By.LINK_TEXT, 'View Details')
-    size = len(elements)
-    print('size:', size)
-    random_index = random.randrange(size)
-    print('random index:', random_index)
+    # elements = driver.find_elements(By.LINK_TEXT, 'View Details')
+    # size = len(elements)
+    # print('size:', size)
+    # random_index = random.randrange(size)
+    # print('random index:', random_index)
+    #
+    # view_details_link = elements[random_index].get_attribute("href")
+    # print('view_details_link:', view_details_link)
+    # elements[random_index].click()
+    # sleep(1)
+    # current_url = driver.current_url
+    # print('current url:', current_url)
+    #
+    # if current_url == view_details_link:
+    #     print('We are on View details of student page.')
 
-    view_details_link = elements[random_index].get_attribute("href")
-    print('view_details_link:', view_details_link)
-    elements[random_index].click()
+    driver.find_element(By.LINK_TEXT, 'View Details').click()
+    sleep(0.5)
+    print('--------------We are on view student details page-----------------')
+    sleep(0.25)
+
+    # _______________________________User Picture________________________________
+    driver.find_element(By.ID, 'imageUpload').send_keys(locators.image_1)
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//input[contains(@class, "btn btn-green btn-save")]').click()
+    sleep(0.3)
+    assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
+    sleep(0.3)
+
+    # ____________________________Personal Information___________________________
+    driver.find_element(By.ID, 'user_student_detail_attributes_first_name').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_first_name').send_keys(locators.first_name)
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_middle_name').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_middle_name').send_keys(locators.middle_name)
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_last_name').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_last_name').send_keys(locators.last_name)
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_preferred_name').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_preferred_name').send_keys(locators.preferred_name)
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').send_keys(locators.date_of_birth)
     sleep(1)
-    current_url = driver.current_url
-    print('current url:', current_url)
+    driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').send_keys(20 * Keys.BACKSPACE)
+    sleep(1)
+    driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').send_keys(locators.date_of_birth)
+    sleep(0.5)
+    driver.find_element(By.ID, 'user_student_detail_attributes_passport_number').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_passport_number').send_keys(locators.get_random_passport_number())
+    sleep(0.3)
+    driver.find_element(By.ID, "select2-user_student_detail_attributes_country_of_citizenship-container").click()
+    sleep(0.5)
+    c = random.randint(254, 498)
+    driver.find_element(By.XPATH, f"//option[@data-select2-id='{c}']").click()
+    sleep(0.5)
+    driver.find_element(By.ID, 'select2-user_student_detail_attributes_country_of_citizenship-container').click()
+    sleep(0.3)
+    driver.find_element(By.ID, 'phone_number').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'phone_number').send_keys(locators.phone_number)
+    sleep(1)
+    driver.find_element(By.XPATH, '//input[@value="Save"]').click()
+    sleep(0.3)
+    assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
+    sleep(0.3)
+    print('Personal Information was successfully updated.')
 
-    if current_url == view_details_link:
-        print('We are on View details of student page.')
+    # __________________________Contact Information_________________________________
+    driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_apartment_number').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_apartment_number').send_keys(locators.aprt_number)
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_mailing_address').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_mailing_address').send_keys(locators.mailing_address)
+    sleep(0.3)
+    driver.find_element(By.XPATH, "//a[@class='chosen-single']//span").click()
+    sleep(1)
+    driver.find_element(By.XPATH, '//li[@data-option-array-index="212"]').click()
+    sleep(1)
+    driver.find_element(By.XPATH, "(//a[@class='chosen-single']//span)[2]").click()
+    sleep(1)
+    driver.find_element(By.XPATH, '(//li[@data-option-array-index="1"])[2]').click()
+    sleep(2)
+    # driver.find_element(By.XPATH, "(//a[@class='chosen-single']//span)[3]").click()
+    # sleep(3)
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "(//a[@class='chosen-single']//span)[3]"))).click()
+    sleep(1)
+    # driver.find_element(By.XPATH, '(//li[@data-option-array-index="1"])[3]').click()
+    # sleep(1.5)
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '(//li[@data-option-array-index="1"])[3]'))).click()
+    sleep(1)
+    driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_zip_code').clear()
+    sleep(0.5)
+    driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_zip_code').send_keys(locators.postal_code)
+    sleep(1)
+    # driver.find_element(By.ID, 'user_email').clear()
+    # sleep(0.3)
+    # driver.find_element(By.ID, 'user_email').send_keys(locators.email_address)
+    # sleep(1)
+    driver.find_element(By.XPATH, "(//input[@name='commit'])[3]").click()
+    sleep(0.3)
+    assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
+    sleep(0.3)
+    print('Contact Information was successfully updated.')
+
+    # ____________________________Education Information_______________________
+    driver.find_element(By.XPATH,
+                        "//div[@id='user_student_detail_attributes_user_educations_attributes_0_credentials_chosen']/a[1]/span[1]").click()
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//a[@class='chosen-single']//span)[2]").click()
+    sleep(0.5)
+    driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_school_name').clear()
+    sleep(0.5)
+    driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_school_name').send_keys(
+        'UBC')
+    sleep(0.5)
+    driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_program').clear()
+    sleep(0.5)
+    driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_program').send_keys(
+        'IT')
+    sleep(0.5)
+    driver.find_element(By.XPATH,
+                        "//div[@id='user_student_detail_attributes_user_educations_attributes_0_gpa_scale_chosen']/a[1]/span[1]").click()
+    sleep(0.5)
+    driver.find_element(By.XPATH,
+                        '//div[@id="user_student_detail_attributes_user_educations_attributes_0_gpa_scale_chosen"]/div[1]/ul[1]/li[1]').click()
+    sleep(0.5)
+    driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_gpa').clear()
+    sleep(0.5)
+    driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_gpa').send_keys('2')
+    sleep(0.5)
+    driver.find_element(By.XPATH,
+                        '//a[contains(@class,"btn btn-green-br ml-auto btn-xs form-group add_fields")]').click()
+    sleep(0.5)
+    Select(driver.find_element(By.XPATH, "//select[@class='custom-select chosen-select']")).select_by_value(
+        'Certificate')
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@placeholder='School Name'])[1]").send_keys('CCTB')
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@placeholder='Program'])[1]").send_keys('ISAQM')
+    sleep(0.5)
+    Select(driver.find_element(By.XPATH, "//select[@class='form-control chosen-select']")).select_by_value('100')
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@placeholder='GPA'])[1]").send_keys('90')
+    sleep(0.75)
+    driver.find_element(By.XPATH, '//a[contains(@class,"btn btn-red-br")]').click()
+    sleep(1)
+    driver.find_element(By.XPATH, "(//input[@value='Save'])[3]").click()
+    sleep(0.5)
+    assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
+    sleep(0.3)
+    print('Education information was successfully updated.')
+
+    # ________________________________Documents____________________________________
+    driver.find_element(By.XPATH, '//i[@class="fa fa-question-circle"]').click()
+    sleep(0.5)
+    assert driver.find_element(By.XPATH, '//a[@data-toggle="tooltip"]').is_displayed()
+    sleep(0.5)
+    driver.find_element(By.XPATH,
+                        '//a[contains(@class,"btn btn-green-br ml-auto btn-xs mb-3 add_fields")]').click()
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@type='file'])[2]").send_keys(locators.document_2)
+    sleep(2)
+    driver.find_element(By.XPATH, "(//i[@class='fa fa-times'])[1]").click()
+    sleep(1)
+    driver.find_element(By.XPATH, "(//input[@value='Save'])[3]").click()
+    sleep(0.5)
+    assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
+    sleep(0.3)
+    print('Documents were successfully updated.')
+
+    # ___________________________Work Experience____________________________________
+    driver.find_element(By.ID,
+                        'user_student_detail_attributes_work_experiences_attributes_0_type_of_industry').clear()
+    sleep(0.3)
+    driver.find_element(By.ID,
+                        'user_student_detail_attributes_work_experiences_attributes_0_type_of_industry').send_keys(
+        'IT')
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_position_rank').clear()
+    sleep(0.3)
+    driver.find_element(By.ID,
+                        'user_student_detail_attributes_work_experiences_attributes_0_position_rank').send_keys('5')
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_employer').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_employer').send_keys(
+        'JupiterSoftware')
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_title').clear()
+    sleep(0.3)
+    driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_title').send_keys(
+        'Developer')
+    sleep(0.3)
+    driver.find_element(By.ID,
+                        'user_student_detail_attributes_work_experiences_attributes_0_job_description').clear()
+    sleep(0.3)
+    driver.find_element(By.ID,
+                        'user_student_detail_attributes_work_experiences_attributes_0_job_description').send_keys(
+        locators.job_description)
+    sleep(0.3)
+    driver.find_element(By.XPATH, '//a[contains(@class, "btn btn-green-br ml-auto btn-xs add_fields")]').click()
+    sleep(0.3)
+    driver.find_element(By.XPATH, "(//input[@placeholder='Industry'])[1]").send_keys('Commerce')
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@placeholder='Rank'])[1]").send_keys('5')
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@placeholder='Employer'])[1]").send_keys('Perl')
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//input[@placeholder='Title'])[1]").send_keys('Accountant')
+    sleep(0.5)
+    driver.find_element(By.XPATH, "(//textarea[@placeholder='Job Description'])[1]").send_keys(
+        locators.job_description)
+    sleep(0.5)
+    driver.find_element(By.XPATH, '(//a[contains(@class,"btn btn-red-br")])[2]').click()
+    sleep(1)
+    header_work_experience_optional = driver.find_element(By.XPATH,
+                                                          '//h5[contains(text(), "Work Experience (optional)")]')
+    section_work_experience = header_work_experience_optional.find_element(By.XPATH, './..')
+    save_button = section_work_experience.find_element(By.XPATH, '//input[contains(@value, "Save")]')
+    # save_button.click()
+    driver.execute_script("arguments[0].click();", save_button)
+    sleep(0.25)
+    assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
+    print('Work Experience was successfully updated.')
+    driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").click()
+    sleep(0.25)
+
+
+def create_application():
+    sleep(0.5)
+    driver.find_element(By.LINK_TEXT, 'My WeGoStudy').click()
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT, 'Students').click()
+    sleep(1)
+    assert driver.current_url == locators.partner_student_details_page
+    assert driver.find_element(By.XPATH, '//h4[contains(text(), "My Students")]').is_displayed()
+
+    # elements = driver.find_elements(By.LINK_TEXT, 'Create Application')
+    # size = len(elements)
+    # print('size:', size)
+    # random_index = random.randrange(size)
+    # print('random index:', random_index)
+    #
+    # create_application_link = elements[random_index].get_attribute("href")
+    # print('create_application_link:', create_application_link)
+    # elements[random_index].click()
+    # sleep(1)
+    # current_url = driver.current_url
+    # print('current url:', current_url)
+    #
+    # if current_url == create_application_link:
+    #     print('We are on Create Admission Application page.')
+
+    print(f'Student name: {locators.student_name}')
+    sleep(0.25)
+    elements = driver.find_elements(By.LINK_TEXT, 'Create Application')
+    sleep(1)
+    elements[13].click()
+    sleep(0.5)
+
+    if driver.find_element(By.XPATH, f'//h4[contains(., "Create Admission Application for {locators.student_name}")]').is_displayed():
+        print(f'---------------We are on Create Admission Application page--------------------')
 
         # _______________________________User Picture________________________________
-
         driver.find_element(By.ID, 'imageUpload').send_keys(locators.image_1)
         sleep(0.5)
-        driver.find_element(By.XPATH, '//input[contains(@class, "btn btn-green btn-save")]').click()
-        sleep(0.3)
-        assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
-        sleep(0.3)
+        print(f'Image was uploaded.')
+        sleep(0.5)
+
+        # ____________________________Course Information___________________________
+        driver.find_element(By.LINK_TEXT, 'Select School').click()
+        sleep(0.5)
+        i = random.randint(1, 59)
+        sleep(1)
+        driver.find_element(By.XPATH,
+                            f'//*[@id="admission_institute_detail_id_chosen"]//li[@data-option-array-index="{i}"]').click()
+        sleep(0.5)
+        driver.find_element(By.LINK_TEXT, 'Select Course').click()
+        sleep(1)
+        driver.find_element(By.XPATH,
+                            f'//*[@id="admission_institute_program_id_chosen"]//li[@data-option-array-index="1"]').click()
+        sleep(0.5)
+        driver.find_element(By.LINK_TEXT, 'Select Starting Semester').click()
+        sleep(0.5)
+        s = random.randint(1, 4)
+        sleep(0.5)
+        driver.find_element(By.XPATH,
+                            f'//*[@id="admission_starting_semester_chosen"]//li[@data-option-array-index="{s}"]').click()
+        sleep(0.5)
+        driver.find_element(By.LINK_TEXT, 'Select Start Day').click()
+        sleep(0.5)
+        d = random.randint(1, 3)
+        sleep(0.5)
+        driver.find_element(By.XPATH,
+                            f'//*[@id="admission_start_day_chosen"]//li[@data-option-array-index="{d}"]').click()
+        sleep(0.5)
+        driver.find_element(By.LINK_TEXT, 'Select Year').click()
+        sleep(0.5)
+        y = random.randint(1, 7)
+        sleep(0.5)
+        driver.find_element(By.XPATH,
+                            f'//*[@id="admission_start_year_chosen"]//li[@data-option-array-index="{y}"]').click()
+        sleep(0.5)
+        print(f'Course Information was populated.')
+        sleep(0.5)
 
         # ____________________________Personal Information___________________________
+        driver.find_element(By.ID, 'admission_cambrian_id').send_keys(locators.college_ID)
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_study_permit_number').send_keys(locators.study_permit)
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_first_language').send_keys(random.choice(locators.languages))
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_date_of_admission').click()
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_date_of_admission').send_keys(locators.admitted_date)
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_date_of_admission').send_keys(20 * Keys.BACKSPACE)
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_date_of_admission').send_keys(locators.admitted_date)
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_gender_female').click()
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_sds_applicant_true').click()
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_study_permit_attached_true').click()
+        sleep(0.5)
+        driver.find_element(By.ID, 'admission_stay_type_private_residence').click()
+        sleep(0.5)
+        print(f'Personal Information was populated.')
+        sleep(0.5)
 
-        driver.find_element(By.ID, 'user_student_detail_attributes_first_name').clear()
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_first_name').send_keys(locators.first_name)
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_middle_name').clear()
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_middle_name').send_keys(locators.middle_name)
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_last_name').clear()
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_last_name').send_keys(locators.last_name)
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_preferred_name').clear()
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_preferred_name').send_keys(locators.preferred_name)
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').click()
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').clear()
+        # ____________________________English Scores___________________________
+        driver.find_element(By.ID, 'admission_english_score_attributes_overall_band').send_keys(locators.band_score)
         sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').send_keys(locators.date_of_birth)
+        driver.find_element(By.ID, 'admission_english_score_attributes_listening').send_keys(locators.listening_score)
         sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').clear()
+        driver.find_element(By.ID, 'admission_english_score_attributes_reading').send_keys(locators.reading_score)
         sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_birth_date').send_keys(locators.date_of_birth)
+        driver.find_element(By.ID, 'admission_english_score_attributes_writing').send_keys(locators.writing_score)
         sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_passport_number').clear()
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_passport_number').send_keys(locators.get_random_passport_number())
-        sleep(0.3)
-        driver.find_element(By.ID, "select2-user_student_detail_attributes_country_of_citizenship-container").click()
+        driver.find_element(By.ID, 'admission_english_score_attributes_speaking').send_keys(locators.speaking_score)
         sleep(0.5)
-        c = random.randint(254, 498)
-        driver.find_element(By.XPATH, f"//option[@data-select2-id='{c}']").click()
+        print(f'English Score Information was populated.')
         sleep(0.5)
-        driver.find_element(By.ID, 'select2-user_student_detail_attributes_country_of_citizenship-container').click()
-        sleep(0.3)
-        driver.find_element(By.ID, 'phone_number').clear()
-        sleep(0.3)
-        driver.find_element(By.ID, 'phone_number').send_keys(locators.phone_number)
-        sleep(1)
-        driver.find_element(By.XPATH, '//input[@value="Save"]').click()
-        sleep(0.3)
-        assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
-        sleep(0.3)
-        print('Personal Information was successfully updated.')
 
-        # __________________________Contact Information_________________________________
-
-        driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_apartment_number').clear()
+        # ____________________________Emergency Contact___________________________
+        driver.find_element(By.ID, 'admission_emergency_contact_attributes_mailing_address').send_keys(locators.mailing_address)
         sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_apartment_number').send_keys(locators.aprt_number)
+        driver.find_element(By.ID, 'admission_emergency_contact_attributes_contact_name').send_keys(locators.preferred_name)
         sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_mailing_address').clear()
+        driver.find_element(By.ID, 'admission_emergency_contact_attributes_apartment').send_keys(locators.aprt_number)
         sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_mailing_address').send_keys(locators.mailing_address)
-        sleep(0.3)
-        driver.find_element(By.XPATH, "//a[@class='chosen-single']//span").click()
+        driver.find_element(By.LINK_TEXT, 'Country').click()
         sleep(1)
-        driver.find_element(By.XPATH, '//li[@data-option-array-index="216"]').click()
-        sleep(1)
-        driver.find_element(By.XPATH, "(//a[@class='chosen-single']//span)[2]").click()
-        sleep(1)
-        driver.find_element(By.XPATH, '(//li[@data-option-array-index="1"])[2]').click()
-        sleep(1)
-        driver.find_element(By.XPATH, "(//a[@class='chosen-single']//span)[3]").click()
-        sleep(1.5)
-        driver.find_element(By.XPATH, '(//li[@data-option-array-index="1"])[3]').click()
-        sleep(1.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_zip_code').clear()
-        sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_zip_code').send_keys(locators.postal_code)
-        sleep(1)
-        # driver.find_element(By.ID, 'user_email').clear()
-        # sleep(0.3)
-        # driver.find_element(By.ID, 'user_email').send_keys(locators.email_address)
-        # sleep(1)
-        driver.find_element(By.XPATH, "(//input[@name='commit'])[3]").click()
-        sleep(0.3)
-        assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
-        sleep(0.3)
-        print('Contact Information was successfully updated.')
-
-        # ____________________________Education Information_______________________
-
         driver.find_element(By.XPATH,
-                            "//div[@id='user_student_detail_attributes_user_educations_attributes_0_credentials_chosen']/a[1]/span[1]").click()
-        sleep(0.5)
-        driver.find_element(By.XPATH, "(//a[@class='chosen-single']//span)[2]").click()
-        sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_school_name').clear()
-        sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_school_name').send_keys(
-            'UBC')
-        sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_program').clear()
-        sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_program').send_keys(
-            'IT')
-        sleep(0.5)
+                            '//*[@id="admission_emergency_contact_attributes_country_chosen"]//li[@data-option-array-index="30"]').click()
+        sleep(1)
+        driver.find_element(By.LINK_TEXT, 'Province/State').click()
+        sleep(1)
         driver.find_element(By.XPATH,
-                            "//div[@id='user_student_detail_attributes_user_educations_attributes_0_gpa_scale_chosen']/a[1]/span[1]").click()
+                            '//div[@id="admission_emergency_contact_attributes_state_chosen"]//li[@data-option-array-index="2"]').click()
+        sleep(1)
+        driver.find_element(By.LINK_TEXT, 'City').click()
+        sleep(1)
+        driver.find_element(By.XPATH, '//div[@id="admission_emergency_contact_attributes_city_chosen"]//li[@data-option-array-index="2"]').click()
+        sleep(1)
+        driver.find_element(By.ID, 'admission_emergency_contact_attributes_zip').send_keys(locators.postal_code)
+        sleep(0.3)
+        driver.find_element(By.ID, 'admission_emergency_contact_attributes_relationship').send_keys(locators.relationship)
+        sleep(0.3)
+        driver.find_element(By.ID, 'admission_emergency_contact_attributes_email').send_keys(locators.email_address)
+        sleep(0.3)
+        driver.find_element(By.ID, 'admission_emergency_contact_attributes_phone_number').send_keys(locators.phone_number)
+        sleep(0.3)
+        print(f'Emergency Contact was populated.')
         sleep(0.5)
-        driver.find_element(By.XPATH,
-                            '//div[@id="user_student_detail_attributes_user_educations_attributes_0_gpa_scale_chosen"]/div[1]/ul[1]/li[1]').click()
-        sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_gpa').clear()
-        sleep(0.5)
-        driver.find_element(By.ID, 'user_student_detail_attributes_user_educations_attributes_0_gpa').send_keys('2')
-        sleep(0.5)
+
+        # ____________________________Education Information___________________________
         driver.find_element(By.XPATH,
                             '//a[contains(@class,"btn btn-green-br ml-auto btn-xs form-group add_fields")]').click()
-        sleep(0.5)
-        Select(driver.find_element(By.XPATH, "//select[@class='custom-select chosen-select']")).select_by_value(
-            'Certificate')
-        sleep(0.5)
-        driver.find_element(By.XPATH, "(//input[@placeholder='School Name'])[1]").send_keys('CCTB')
-        sleep(0.5)
-        driver.find_element(By.XPATH, "(//input[@placeholder='Program'])[1]").send_keys('ISAQM')
-        sleep(0.5)
-        Select(driver.find_element(By.XPATH, "//select[@class='form-control chosen-select']")).select_by_value('100')
-        sleep(0.5)
-        driver.find_element(By.XPATH, "(//input[@placeholder='GPA'])[1]").send_keys('90')
-        sleep(0.75)
-        driver.find_element(By.XPATH, '//a[contains(@class,"btn btn-red-br")]').click()
+        sleep(2)
+        driver.find_element(By.XPATH, '(//a[contains(@class,"btn btn-red-b")])[2]').click()
         sleep(1)
-        driver.find_element(By.XPATH, "(//input[@value='Save'])[3]").click()
+        print(f'Education information was updated.')
         sleep(0.5)
-        assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
-        sleep(0.3)
-        print('Education information was successfully updated.')
 
-        # ________________________________Documents____________________________________
-
-        driver.find_element(By.XPATH, '//i[@class="fa fa-question-circle"]').click()
-        sleep(0.5)
-        assert driver.find_element(By.XPATH, '//a[@data-toggle="tooltip"]').is_displayed()
-        sleep(0.5)
+        # ____________________________Documents___________________________
         driver.find_element(By.XPATH,
                             '//a[contains(@class,"btn btn-green-br ml-auto btn-xs mb-3 add_fields")]').click()
         sleep(0.5)
-        driver.find_element(By.XPATH, "(//input[@type='file'])[2]").send_keys(locators.document_2)
+        driver.find_element(By.XPATH, '(//input[contains(@class, "form-control-file")])[1]').send_keys(
+            locators.document_1)
         sleep(2)
-        driver.find_element(By.XPATH, "(//i[@class='fa fa-times'])[1]").click()
-        sleep(1)
-        driver.find_element(By.XPATH, "(//input[@value='Save'])[3]").click()
+        driver.find_element(By.XPATH,
+                            '//a[contains(@class,"btn btn-green-br ml-auto btn-xs mb-3 add_fields")]').click()
         sleep(0.5)
-        assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
-        sleep(0.3)
-        print('Documents were successfully updated.')
+        driver.find_element(By.XPATH, '(//input[contains(@class, "form-control-file")])[2]').send_keys(
+            locators.document_2)
+        sleep(2)
+        driver.find_element(By.XPATH, '(//i[@class="fa fa-times"])[2]').click()
+        sleep(0.5)
+        print(f'Documents were updated.')
+        sleep(0.5)
 
-        # ___________________________Work Experience____________________________________
-
+        # ____________________________Work Experience___________________________
         driver.find_element(By.ID,
-                            'user_student_detail_attributes_work_experiences_attributes_0_type_of_industry').clear()
-        sleep(0.3)
-        driver.find_element(By.ID,
-                            'user_student_detail_attributes_work_experiences_attributes_0_type_of_industry').send_keys(
-            'IT')
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_position_rank').clear()
+                            'admission_work_experiences_attributes_0_type_of_industry').send_keys('Business')
         sleep(0.3)
         driver.find_element(By.ID,
-                            'user_student_detail_attributes_work_experiences_attributes_0_position_rank').send_keys('5')
+                            'admission_work_experiences_attributes_0_position_rank').send_keys('2')
         sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_employer').clear()
+        driver.find_element(By.ID, 'admission_work_experiences_attributes_0_employer').send_keys('ABC')
         sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_employer').send_keys(
-            'JupiterSoftware')
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_title').clear()
-        sleep(0.3)
-        driver.find_element(By.ID, 'user_student_detail_attributes_work_experiences_attributes_0_title').send_keys(
-            'Developer')
+        driver.find_element(By.ID, 'admission_work_experiences_attributes_0_title').send_keys('Account Manager')
         sleep(0.3)
         driver.find_element(By.ID,
-                            'user_student_detail_attributes_work_experiences_attributes_0_job_description').clear()
-        sleep(0.3)
-        driver.find_element(By.ID,
-                            'user_student_detail_attributes_work_experiences_attributes_0_job_description').send_keys(
-            locators.job_description)
+                            'admission_work_experiences_attributes_0_job_description').send_keys(locators.job_description)
         sleep(0.3)
         driver.find_element(By.XPATH, '//a[contains(@class, "btn btn-green-br ml-auto btn-xs add_fields")]').click()
         sleep(0.3)
@@ -740,16 +950,18 @@ def view_details_of_student():
             locators.job_description)
         sleep(0.5)
         driver.find_element(By.XPATH, '(//a[contains(@class,"btn btn-red-br")])[2]').click()
+        sleep(0.3)
+        print(f'Work Experience was updated.')
+        sleep(0.5)
+
+        driver.find_element(By.ID, 'admission_electronic_communication_false').click()
+        sleep(0.5)
+        driver.find_element(By.XPATH, "//input[@value='Save']").click()
+        sleep(2)
+        assert driver.find_element(By.XPATH, f'//div[contains(text(), "Admission application created successfully for the {locators.student_name}.")]').is_displayed()
         sleep(1)
-        header_work_experience_optional = driver.find_element(By.XPATH,
-                                                              '//h5[contains(text(), "Work Experience (optional)")]')
-        section_work_experience = header_work_experience_optional.find_element(By.XPATH, './..')
-        save_button = section_work_experience.find_element(By.XPATH, '//input[contains(@value, "Save")]')
-        # save_button.click()
-        driver.execute_script("arguments[0].click();", save_button)
-        sleep(0.25)
-        assert driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").is_displayed()
-        print('Work Experience was successfully updated.')
-        driver.find_element(By.XPATH, "//div[text()='Student detail was successfully updated.']").click()
-        sleep(0.25)
+        assert driver.current_url == locators.partner_student_details_page
+        sleep(0.5)
+        print(f'Application was successfully created.')
+        sleep(0.5)
 

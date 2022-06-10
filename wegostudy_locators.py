@@ -20,7 +20,7 @@ middle_name = fake.first_name()
 last_name = fake.last_name()
 preferred_name = f'{first_name} {last_name}'
 full_name = f'{first_name} {middle_name} {last_name}'
-date_of_birth = '20001112'
+date_of_birth = '2000-11-12'
 passport_number = fake.pyint(111111,999999)
 
 phone_number = fake.phone_number()[:10]
@@ -98,7 +98,20 @@ schoollist = ["CCTB", "UBC", "SFU", "VCC", "MMU"]
 programlist = ["MBA", "SQA","web design", "UI/UX"]
 credentiallist = ["Certificate", "Diploma", "Degree", "Master", "Doctoral"]
 GPAscales = [4, 5, 10, 100]
-languages = ["English", "French", "spanish"]
+languages = ["English", "French", "Spanish"]
 service = fake.catch_phrase()
 iccrc = fake.ean(length=8)
+
+student_name = 'Kenneth Andrew Kim'
+college_ID = fake.pyint(1, 200)
+study_permit = fake.pyint(1, 500)
+admitted_date = '06-20-2022'
+band_score = '6'
+listening_score = '5'
+reading_score = '4'
+writing_score = '5'
+speaking_score = '6'
+relationship = 'Uncle'
+
+
 
