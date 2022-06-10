@@ -14,12 +14,14 @@ partner_home_page = 'https://www.wegostudy.ca/partner/home'
 partner_student_details_page = 'https://www.wegostudy.ca/partners/student_details'
 partner_new_student_page = 'https://www.wegostudy.ca/partners/student_details/new'
 partner_details_page = 'https://www.wegostudy.ca/partners/partner_details/testpartner-a6d899cd-c8aa-4ed0-87c7-bafea8aca8ae'
+partner_admissions ='https://www.wegostudy.ca/partners/admissions'
 
 first_name = fake.first_name()
 middle_name = fake.first_name()
 last_name = fake.last_name()
 preferred_name = f'{first_name} {last_name}'
 full_name = f'{first_name} {middle_name} {last_name}'
+
 date_of_birth = '2000-11-12'
 passport_number = fake.pyint(111111,999999)
 
@@ -102,6 +104,7 @@ languages = ["English", "French", "Spanish"]
 service = fake.catch_phrase()
 iccrc = fake.ean(length=8)
 
+
 student_name = 'Kenneth Andrew Kim'
 college_ID = fake.pyint(1, 200)
 study_permit = fake.pyint(1, 500)
@@ -113,5 +116,9 @@ writing_score = '5'
 speaking_score = '6'
 relationship = 'Uncle'
 
-
+std_name = 'Jonathan'
+a = datetime.datetime(2022, 6, 5)
+start_date = a.strftime("%Y/%m/%d")
+b = datetime.datetime(2022, 6, 30)
+end_date = b.strftime("%Y/%m/%d")
 

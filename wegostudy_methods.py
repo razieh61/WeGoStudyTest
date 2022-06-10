@@ -104,9 +104,109 @@ def negative_login_test():
         sleep(1)
 
 
+def all_applications():
+    driver.find_element(By.LINK_TEXT, 'My WeGoStudy').click()
+    sleep(0.5)
+    driver.find_element(By.LINK_TEXT, 'Applications').click()
+    sleep(1)
+    assert driver.current_url == locators.partner_admissions
+    sleep(1)
+    assert driver.find_element(By.XPATH, '//h4[contains(text(), "Admission Applications")]').is_displayed()
+    sleep(0.5)
+    driver.find_element(By.ID, 'student').send_keys(locators.std_name)
+    sleep(0.25)
+    driver.find_element(By.XPATH, '//button[@id = "filter_application"]').click()
+    sleep(1)
+    if driver.find_element(By.XPATH, f'//table[@id="admission_list"]//td[contains(text(), {locators.std_name})]').is_displayed():
+        print(f"--- {locators.std_name} is found")
+        sleep(0.5)
+    elif driver.find_element(By.XPATH, '//table[@id="admission_list"]//td[1][contains(text(), "No data available in table")]').is_displayed():
+        print(f"No data available in table")
+        sleep(0.5)
+    else:
+        print(f"???? unknown error in search applications")
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT, 'All Applications').click()
+    sleep(1)
+    sum = 0
+    page_num = len(WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located(
+        (By.XPATH, '//div[@id = "admission_list_paginate"]/span/a'))))
+    print(f'number of pages: {page_num}')
+    i=1
+    rows_num = len(WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located(
+        (By.XPATH, "//table[@id='admission_list']/tbody/tr"))))
+    sum += rows_num
+    sleep(0.5)
+    i += 1
+    while i <= page_num:
+        driver.find_element(By.XPATH, f'//div[@id = "admission_list_paginate"]/span/a[{i}]').click()
+        sleep(0.5)
+        rows_num = len(WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located(
+            (By.XPATH, "//table[@id='admission_list']/tbody/tr"))))
+        sum += rows_num
+        sleep(0.5)
+        i += 1
+    print(f'number of applications: {sum}')
+    sleep(0.25)
+    mylist = driver.find_element(By.XPATH, '//*[@id="admission_list_info"]').text.split()
+    sleep(0.25)
+    num = int(mylist[5])
+    sleep(0.25)
+    assert num == sum
+    print("--- all of the applications are displayed")
+    sleep(0.5)
+    period = f"{locators.start_date} - {locators.end_date}"
+    sleep(0.25)
+    driver.find_element(By.XPATH, '//input[@id="date_range"]').send_keys(period)
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//button[@id = "filter_application"]').click()
+    sleep(1)
+
+    # rows_num = len(WebDriverWait(driver, 20).until(EC.visibility_of_all_elements_located(
+    #     (By.XPATH, "//table[@id='admission_list']/tbody/tr"))))
+    # for i in range(1, page_num+1):
+    #     for j in range(1, rows_num+1):
+    #         str = driver.find_element(By.XPATH, f"//table[@id='admission_list']/tbody[1]/tr[{j}]/td[8]").text
+    #         str.split()
+    print(f"--- applications between {locators.start_date} and {locators.end_date} are displayed")
+    driver.find_element(By.LINK_TEXT, 'All Applications').click()
+    sleep(1)
+    driver.find_element(By.XPATH, '//input[@id="date_range"]').clear()
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//input[@id="date_range"]').send_keys(period)
+    sleep(0.5)
+    driver.find_element(By.ID, 'student').send_keys(locators.std_name)
+    sleep(0.5)
+    driver.find_element(By.XPATH, '//button[@id = "filter_application"]').click()
+    sleep(1)
+    print(f"--- only applications between {locators.start_date} and {locators.end_date} with the name= {locators.std_name} are displayed")
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT, 'Incomplete Applications').click()
+    sleep(1)
+    print("--- only Incomplete applications are displayed")
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT, 'Submitted Applications').click()
+    sleep(1)
+    print("--- only Submitted applications are displayed")
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT, 'Approved Applications').click()
+    sleep(1)
+    print("--- only Approved applications are displayed")
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT, 'Accepted Applications').click()
+    sleep(1)
+    print("--- only Accepted applications are displayed")
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT, 'All Applications').click()
+    sleep(1)
+    # WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//*[@id='admission_list']/tbody/tr[2]/td[9]/div[@class = 'custom-chk data-check']"))).click()
+    # sleep(0.25)
+    # driver.find_element(By.ID, 'delete_applications').click()
+    # sleep(0.5)
+
+
 
 def update_profile():
-
     driver.find_element(By.XPATH, '//*[@id="navbar-nav"]/ul[2]/li[2]/a').click()
     sleep(0.5)
     driver.find_element(By.LINK_TEXT, 'My Profile').click()
@@ -149,19 +249,19 @@ def update_profile():
     sleep(0.5)
     driver.find_element(By.ID, "select2-partner_detail_country_of_citizenship-container").click()
     sleep(0.5)
-    r = random.randint(7, 251)
+    r = random.randint(7, 200)
     Select(driver.find_element(By.ID, "partner_detail_country_of_citizenship")).select_by_index(r)
     sleep(0.5)
     driver.find_element(By.CLASS_NAME, 'selected-flag').click()
     sleep(0.25)
     c = random.randint(1, 20)
-    sleep(0.25)
+    sleep(0.5)
     driver.find_element(By.XPATH, f"//ul[@id='country-listbox']/li[{c}]").click()
-    sleep(0.25)
+    sleep(0.5)
     driver.find_element(By.ID, 'phone_number').clear()
-    sleep(0.25)
+    sleep(0.5)
     driver.find_element(By.ID, 'phone_number').send_keys(locators.phone_number)
-    sleep(0.25)
+    sleep(0.5)
     driver.find_element(By.XPATH, "(//input[@type = 'submit'])[1]").click()
     sleep(2)
     assert driver.find_element(By.XPATH,'//div[contains(text(), "Partner Details was successfully updated")]').is_displayed()
@@ -179,19 +279,20 @@ def update_profile():
     sleep(0.25)
     driver.find_element(By.ID, 'partner_detail_address_attributes_mailing_address').send_keys(locators.mailing_address)
     sleep(1)
-    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_country_chosen']/a[1]/span[1]").click()
-    sleep(1)
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='partner_detail_address_attributes_country_chosen']/a[1]/span[1]"))).click()
+    # driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_country_chosen']/a[1]/span[1]").click()
+    # sleep(1)
     r = random.randint(3, 246)
     sleep(1)
-    driver.find_element(By.XPATH, f'//div[@id="partner_detail_address_attributes_country_chosen"]//ul[1]/li[@data-option-array-index={r}]').click()
-    sleep(2)
-    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_state_chosen']/a/span").click()
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, f'//div[@id="partner_detail_address_attributes_country_chosen"]//ul[1]/li[@data-option-array-index={r}]'))).click()
+    sleep(0.5)
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='partner_detail_address_attributes_state_chosen']/a/span"))).click()
     sleep(1)
-    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_state_chosen']//ul/li[2]").click()
-    sleep(1.5)
-    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_city_chosen']/a/span").click()
-    sleep(1.5)
-    driver.find_element(By.XPATH, "//div[@id='partner_detail_address_attributes_city_chosen']//ul/li[2]").click()
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='partner_detail_address_attributes_state_chosen']//ul/li[2]"))).click()
+    sleep(0.5)
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='partner_detail_address_attributes_city_chosen']/a/span"))).click()
+    sleep(0.5)
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='partner_detail_address_attributes_city_chosen']//ul/li[2]"))).click()
     sleep(0.5)
     driver.find_element(By.ID, 'partner_detail_address_attributes_zip_code').clear()
     sleep(0.25)
@@ -205,12 +306,13 @@ def update_profile():
     driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
     sleep(1)
     # ____________________________Education Information_______________________
-    driver.find_element(By.XPATH, "//div[@id='partner_detail_user_educations_attributes_0_credentials_chosen']/a[1]/span[1]").click()
-    sleep(1)
-    x = random.randint(1,4)
-    sleep(0.25)
-    driver.find_element(By.XPATH, f'//*[@id="partner_detail_user_educations_attributes_0_credentials_chosen"]//ul[@class="chosen-results"]/li[{x}]').click()
-    sleep(1)
+    # WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//div[@id='partner_detail_user_educations_attributes_0_credentials_chosen']/a[1]/span[1]"))).click()
+    # driver.find_element(By.XPATH, "//div[@id='partner_detail_user_educations_attributes_0_credentials_chosen']/a[1]/span[1]").click()
+    # sleep(0.5)
+    # x = random.randint(1, 3)
+    # WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, f'//*[@id="partner_detail_user_educations_attributes_0_credentials_chosen"]//ul[@class="chosen-results"]/li[{x}]'))).click()
+    # # driver.find_element(By.XPATH, f'//*[@id="partner_detail_user_educations_attributes_0_credentials_chosen"]//ul[@class="chosen-results"]/li[{x}]').click()
+    sleep(0.5)
     r = random.randint(0, 4)
     sleep(0.5)
     driver.find_element(By.ID, 'partner_detail_user_educations_attributes_0_school_name').clear()
@@ -341,7 +443,6 @@ def update_profile():
     driver.find_element(By.XPATH, '//div[@id="toast-container"]').click()
     sleep(2)
 
-
 def create_new_student():
     sleep(1)
     assert driver.current_url == locators.partner_home_page
@@ -394,17 +495,17 @@ def create_new_student():
         sleep(0.3)
         driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_mailing_address').send_keys(locators.mailing_address)
         sleep(0.3)
-        driver.find_element(By.LINK_TEXT, 'Country').click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable(driver.find_element(By.LINK_TEXT, 'Country'))).click()
         sleep(0.3)
-        driver.find_element(By.XPATH, '//li[@data-option-array-index="21"]').click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable(driver.find_element(By.XPATH, '//li[@data-option-array-index="21"]'))).click()
         sleep(0.3)
-        driver.find_element(By.LINK_TEXT, 'Province/State').click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable(driver.find_element(By.LINK_TEXT, 'Province/State'))).click()
         sleep(0.3)
-        driver.find_element(By.XPATH, '(//li[@data-option-array-index="1"])[2]').click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable(driver.find_element(By.XPATH, '(//li[@data-option-array-index="1"])[2]'))).click()
         sleep(0.3)
-        driver.find_element(By.LINK_TEXT, 'City').click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable(driver.find_element(By.LINK_TEXT, 'City'))).click()
         sleep(0.5)
-        driver.find_element(By.XPATH, '(//li[@data-option-array-index="1"])[3]').click()
+        WebDriverWait(driver, 10).until(EC.element_to_be_clickable(driver.find_element(By.XPATH, '(//li[@data-option-array-index="1"])[3]'))).click()
         sleep(0.3)
         driver.find_element(By.ID, 'user_student_detail_attributes_address_attributes_zip_code').send_keys(locators.postal_code)
         sleep(0.3)
@@ -524,6 +625,7 @@ def view_details_of_student():
     #
     # if current_url == view_details_link:
     #     print('We are on View details of student page.')
+
 
     driver.find_element(By.LINK_TEXT, 'View Details').click()
     sleep(0.5)
@@ -774,7 +876,7 @@ def create_application():
     sleep(0.25)
     elements = driver.find_elements(By.LINK_TEXT, 'Create Application')
     sleep(1)
-    elements[13].click()
+    elements[16].click()
     sleep(0.5)
 
     if driver.find_element(By.XPATH, f'//h4[contains(., "Create Admission Application for {locators.student_name}")]').is_displayed():
@@ -965,3 +1067,13 @@ def create_application():
         print(f'Application was successfully created.')
         sleep(0.5)
 
+        driver.find_element(By.ID, 'admission_electronic_communication_false').click()
+        sleep(0.5)
+        driver.find_element(By.XPATH, "//input[@value='Save']").click()
+        sleep(2)
+        assert driver.find_element(By.XPATH, f'//div[contains(text(), "Admission application created successfully for the {locators.student_name}.")]').is_displayed()
+        sleep(1)
+        assert driver.current_url == locators.partner_student_details_page
+        sleep(0.5)
+        print(f'Application was successfully created.')
+        sleep(0.5)
